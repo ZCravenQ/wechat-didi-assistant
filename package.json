@@ -1,0 +1,11 @@
+{
+  "name": "wechat-didi-memory-bridge",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Official MCP Memory Server and SDK dependencies for the WeChat DiDi bridge",
+  "engines": {"node": ">=18"},
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@modelcontextprotocol/server-memory": "1.0.0"
+  }
+}

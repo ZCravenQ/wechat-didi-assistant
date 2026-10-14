@@ -1,0 +1,28 @@
+# Credentials and personal runtime data
+.env
+.env.*
+!.env.example
+.runtime/
+runtime/
+data/
+backups/
+*.sqlite*
+*.db
+*.jsonl
+wechat-auth.json
+admin-settings.json
+*.pem
+*.key
+*.log
+*.zip
+*.tar*
+
+# Installed dependencies and local caches
+node_modules/
+.npm-cache/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+Thumbs.db
