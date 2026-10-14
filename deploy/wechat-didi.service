@@ -1,0 +1,33 @@
+[Unit]
+Description=WeChat DiDi Assistant
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=wechat-didi
+Group=wechat-didi
+WorkingDirectory=/opt/wechat-didi-assistant
+Environment=APP_ENV_FILE=/etc/wechat-didi-assistant.env
+Environment=APP_RUNTIME_DIR=/var/lib/wechat-didi-assistant
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -X utf8 /opt/wechat-didi-assistant/main.py wechat
+StateDirectory=wechat-didi-assistant
+StateDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGINT
+KillMode=mixed
+TimeoutStopSec=120
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
