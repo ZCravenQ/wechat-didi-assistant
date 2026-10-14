@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if [[ $(id -u) != 0 ]]; then
+  echo 'Use sudo wechat-didi <login|tools|console|ui|memory-check|wechat>' >&2
+  exit 1
+fi
+exec runuser -u wechat-didi -- env \
+  APP_ENV_FILE=/etc/wechat-didi-assistant.env \
+  APP_RUNTIME_DIR=/var/lib/wechat-didi-assistant \
+  PYTHONDONTWRITEBYTECODE=1 \
+  /usr/bin/python3 -X utf8 /opt/wechat-didi-assistant/main.py "$@"
