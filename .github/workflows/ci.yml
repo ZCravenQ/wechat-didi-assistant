@@ -1,0 +1,27 @@
+name: Tests
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: python -X utf8 -m unittest -v test_agent test_admin_places test_amap test_memory_mcp test_deploy
+      - run: python -X utf8 offline_demo.py
+      - run: bash -n deploy/install.sh
+      - run: systemd-analyze verify deploy/wechat-didi.service
+      - name: Install and verify external memory storage
+        run: |
+          sudo env "PATH=$PATH" bash deploy/install.sh
+          sudo env "PATH=$PATH" /usr/local/bin/wechat-didi memory-check
+          test "$(stat -c '%a' /var/lib/wechat-didi-assistant)" = 700
+          test "$(stat -c '%a' /etc/wechat-didi-assistant.env)" = 640
