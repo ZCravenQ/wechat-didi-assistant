@@ -3,6 +3,22 @@ on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: python -X utf8 -m unittest -v test_agent test_admin_places test_amap test_memory_mcp test_deploy
+      - name: Test Windows installation and retained configuration
+        shell: powershell
+        run: .\test_windows.ps1
   linux:
     runs-on: ubuntu-24.04
     steps:
