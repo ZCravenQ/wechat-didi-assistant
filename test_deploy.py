@@ -11,7 +11,8 @@ import unittest
 class DeploymentTests(unittest.TestCase):
     def test_all_personal_state_uses_external_runtime_directory(self):
         with TemporaryDirectory() as directory:
-            runtime = Path(directory) / 'nested' / 'data'
+            # Windows TEMP may use an 8.3 alias; application paths are canonical.
+            runtime = Path(directory).resolve() / 'nested' / 'data'
             config = Path(directory) / 'server.env'
             config.write_text('DEPLOY_TEST_VALUE=from-file\n', encoding='utf-8')
             code = '''
